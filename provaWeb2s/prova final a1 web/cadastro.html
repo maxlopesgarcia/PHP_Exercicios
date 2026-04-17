@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<!-- Define o documento como HTML5 -->
+<html lang="pt-BR">
+
+<head>
+
+  <!-- Define o padrão de caracteres -->
+  <meta charset="UTF-8">
+
+  <!-- Responsividade (adaptação para celular) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título da aba -->
+  <title>Cadastro de Conta - World of Warcraft</title>
+
+  <!-- Importa o CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+
+    <!-- Título principal -->
+    <h1>Cadastro de Conta - World of Warcraft</h1>
+
+    <!-- Menu de navegação -->
+    <nav aria-label="Menu principal">
+      <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="sobre.html">Lore</a></li>
+        <li><a href="cadastro.html">Criar Conta</a></li>
+      </ul>
+    </nav>
+
+  </header>
+
+  <!-- 
+  MAIN com layout dividido (imagem + formulário)
+  Classe "layout-cadastro" usa flexbox no CSS
+  -->
+  <main class="layout-cadastro">
+
+    
+    <!-- LADO ESQUERDO: IMAGEM -->
+    <aside class="caixa-imagem-cadastro">
+
+      <!-- 
+      Imagem ilustrativa
+      alt ajuda na acessibilidade
+      -->
+      <img src="img/wow.jpg" alt="Imagem WoW">
+
+    </aside>
+
+    
+    <!-- LADO DIREITO: FORMULÁRIO -->
+    <section class="caixa-form">
+
+      <!-- Título -->
+      <h2 style="color: gold;">Crie sua Conta</h2>
+
+      <!-- 
+      Formulário
+
+      id="formCadastro":
+      - Usado no JavaScript para manipulação (reset)
+
+      onsubmit="return criarConta()":
+      - Chama função JS ao enviar
+      - Se retornar false, o envio é bloqueado
+      -->
+      <form id="formCadastro" onsubmit="return criarConta()" aria-label="Formulário de cadastro de usuário">
+
+        <!-- Nome -->
+        <label for="nome">Nome Completo:</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <!-- Email -->
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+
+        <!-- Telefone -->
+        <label for="telefone">Telefone:</label>
+        <input type="tel" id="telefone" name="telefone" required>
+
+        <!-- Data de nascimento -->
+        <label for="nascimento">Data de Nascimento:</label>
+        <input type="date" id="nascimento" name="nascimento" required>
+
+        <!-- Select (lista suspensa) -->
+        <label for="classe">Classe favorita:</label>
+        <select id="classe" name="classe">
+          <option>Guerreiro</option>
+          <option>Mago</option>
+          <option>Caçador</option>
+          <option>Paladino</option>
+        </select>
+
+        <!-- 
+        Fieldset:
+        - Agrupa campos relacionados
+        -->
+        <fieldset>
+
+          <legend>Receber novidades?</legend>
+
+          <!-- Radio buttons -->
+          <label>
+            <input type="radio" name="news" value="sim" required> Sim
+          </label>
+
+          <label>
+            <input type="radio" name="news" value="nao"> Não
+          </label>
+
+        </fieldset>
+
+        <!-- Senha -->
+        <label for="senha">Senha:</label>
+
+        <!-- 
+        minlength="6":
+        - Exige no mínimo 6 caracteres
+        -->
+        <input type="password" id="senha" name="senha" required minlength="6">
+
+        <!-- Confirmar senha -->
+        <label for="confirmarSenha">Confirmar Senha:</label>
+        <input type="password" id="confirmarSenha" name="confirmarSenha" required minlength="6">
+
+        <!-- Botão de envio -->
+        <button type="submit">Cadastrar</button>
+
+      </form>
+
+      <!-- 
+      Div para mostrar mensagens do JavaScript
+      (erro ou sucesso)
+      -->
+      <div id="mensagemCadastro" aria-label="status cadastro"></div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 World of Warcraft Portal. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Importa JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
+
+<!-- 
+Resumo geral:
+
+- Página de cadastro completa
+- Usa HTML + CSS + JavaScript
+
+Conceitos importantes:
+- form + inputs
+- validação com required e minlength
+- select e radio
+- onsubmit chama função JS
+- DOM (id usados no script)
+- layout com flexbox (imagem + form)
+
+Fluxo:
+Usuário preenche → clica em cadastrar → JS valida → mostra mensagem → limpa form
+-->

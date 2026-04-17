@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<!-- Define o documento como HTML5 -->
+<html lang="pt-BR">
+
+<head>
+
+  <!-- Define o padrão de caracteres -->
+  <meta charset="UTF-8">
+
+  <!-- Responsividade para dispositivos móveis -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título da aba -->
+  <title>World of Warcraft Portal</title>
+
+  <!-- Importa o CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+
+<body>
+
+  <!-- HEADER (TOPO DO SITE) -->
+  <header>
+
+    <!-- Título principal -->
+    <h1>World of Warcraft Portal</h1>
+
+    <!-- Menu de navegação -->
+    <nav aria-label="Menu principal">
+
+      <!-- Lista de links -->
+      <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="sobre.html">Lore</a></li>
+        <li><a href="cadastro.html">Criar Conta</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main>
+
+    <!-- Título com estilo inline -->
+    <h2 style="color: gold;">Temporadas Passadas</h2>
+    
+    <!-- 
+    CARROSSEL
+    aria-label ajuda na acessibilidade
+    -->
+    <section class="carrossel" aria-label="Carrossel das temporadas passadas">
+
+      <!-- Botão anterior -->
+      <button class="anterior" onclick="mudarImagem(-1)">❮</button>
+
+      <!-- 
+      Imagem principal do carrossel
+      id usado no JavaScript para trocar a imagem
+      -->
+      <img id="imgCarrossel" src="img/gelo.png" alt="Imagem da temporada da gelo">
+
+      <!-- Botão próximo -->
+      <button class="proximo" onclick="mudarImagem(1)">❯</button>
+
+    </section>
+
+    <!-- INTRODUÇÃO -->
+    <section class="intro">
+
+      <h2>Bem-vindo ao Portal de World of Warcraft</h2>
+
+      <p>
+        Texto introdutório explicando o objetivo do site
+      </p>
+
+    </section>
+
+    <!-- CLASSES DO JOGO -->
+    <section class="classes-wow">
+
+      <h2>Classes do World of Warcraft</h2>
+
+      <!-- Container que usa GRID (definido no CSS) -->
+      <div id="container-cards">
+
+        <!-- Cada bloco representa uma classe -->
+        <div class="classe">
+          <img src="img/guerreiro.png" alt="Guerreiro">
+          <h3>Guerreiro</h3>
+          <p>Combatente corpo a corpo.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/mago.png" alt="Mago">
+          <h3>Mago</h3>
+          <p>Usa magia arcana.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/hunter.png" alt="Caçador">
+          <h3>Caçador</h3>
+          <p>Especialista à distância.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/rogue.png" alt="Ladino">
+          <h3>Ladino</h3>
+          <p>Furtividade e precisão.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/paladino.png" alt="Paladino">
+          <h3>Paladino</h3>
+          <p>Guerreiro sagrado.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/padre.png" alt="Sacerdote">
+          <h3>Sacerdote</h3>
+          <p>Cura e suporte.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/druida.png" alt="Druida">
+          <h3>Druida</h3>
+          <p>Muda de forma.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/shaman.png" alt="Xamã">
+          <h3>Xamã</h3>
+          <p>Poder dos elementos.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/bruxo.png" alt="Bruxo">
+          <h3>Bruxo</h3>
+          <p>Magia sombria.</p>
+        </div>
+
+        <div class="classe">
+          <img src="img/monge.png" alt="Monge">
+          <h3>Monge</h3>
+          <p>Agilidade e equilíbrio.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RANKING -->
+    <section class="ranking" aria-label="Ranking da temporada atual e informações">
+
+      <h2>Ranking Atual</h2>
+
+      <div class="ranking-container">
+        
+        <!-- TABELA -->
+        <div class="tabela">
+
+          <table>
+
+            <!-- Título da tabela -->
+            <caption>Top 5 Jogadores</caption>
+
+            <!-- Cabeçalho -->
+            <thead>
+              <tr>
+                <th>Posição</th>
+                <th>Jogador</th>
+                <th>Classe</th>
+                <th>Guilda</th>
+                <th>Pontos</th>
+              </tr>
+            </thead>
+
+            <!-- Conteúdo -->
+            <tbody>
+
+              <!-- Cada linha é um jogador -->
+              <tr>
+                <td>1</td>
+                <td><a href="#">Zetoalha</a></td>
+                <td>Mago</td>
+                <td>Firelords</td>
+                <td>1500</td>
+              </tr>
+
+              <!-- outras linhas seguem o mesmo padrão -->
+
+            </tbody>
+
+            <!-- Rodapé -->
+            <tfoot>
+              <tr>
+                <td colspan="5">Parabéns aos Campeões</td>
+              </tr>
+            </tfoot>
+
+          </table>
+        </div>
+
+        <!-- ARTIGO AO LADO -->
+        <article class="artigo-temporada">
+
+          <h3>Temporada da Chama Eterna</h3>
+
+          <p>
+            Texto explicando a temporada atual.
+          </p>
+
+          <img src="img/temporada.png" alt="Banner da temporada">
+
+        </article>
+
+      </div>
+    </section>
+    
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <p>© 2025 World of Warcraft Portal. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Importa JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
+
+<!-- 
+Resumo geral:
+
+- Estrutura completa de site
+- header → menu
+- main → conteúdo principal
+- section → organização por blocos
+- carrossel → usa JS (onclick)
+- grid → exibição de classes
+- tabela → ranking
+- footer → rodapé
+
+Tecnologias usadas:
+HTML + CSS + JavaScript
+
+Esse tipo de página integra tudo que você aprendeu até agora.
+-->

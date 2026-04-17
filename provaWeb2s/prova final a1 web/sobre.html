@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<!-- 
+Define o tipo do documento como HTML5
+-->
+<html lang="pt-BR">
+
+<head>
+
+  <!-- Define o padrão de caracteres (acentos, etc) -->
+  <meta charset="UTF-8">
+
+  <!-- Responsividade (ajusta para celular) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título da aba do navegador -->
+  <title>Sobre Nós - World of Warcraft</title>
+
+  <!-- 
+  Importa o arquivo CSS principal do projeto
+  -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /*
+    CSS interno (só vale para esta página)
+
+    .box img:
+    - Seleciona todas as imagens dentro de elementos com classe "box"
+    - Adiciona uma borda dourada
+    */
+    .box img {
+      border: 2px solid #FFD700;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- 
+  Cabeçalho da página
+  -->
+  <header>
+
+    <!-- Título principal -->
+    <h1>Sobre o Portal - World of Warcraft</h1>
+
+    <!-- 
+    Menu de navegação
+    aria-label ajuda na acessibilidade (leitores de tela)
+    -->
+    <nav aria-label="Menu principal">
+
+      <!-- Lista de links -->
+      <ul>
+
+        <!-- Cada <li> é um item do menu -->
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="sobre.html">Lore</a></li>
+        <li><a href="cadastro.html">Criar Conta</a></li>
+
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 
+  Conteúdo principal da página
+  -->
+  <main>
+
+    <!-- 
+    Seção com conteúdo sobre a lore
+    aria-label melhora acessibilidade
+    -->
+    <section class="sobre-container" aria-label="Conteúdo sobre a lore">
+
+  
+  <!-- Container com imagens lado a lado (flex) -->
+  <div class="imagens-flex">
+
+    <!-- Caixa de conteúdo -->
+    <div class="box">
+
+      <!-- Imagem com texto alternativo -->
+      <img src="img/arthas.png" alt="ilustração de Arthas Menethil, O Rei Lich">
+
+      <!-- Título com estilo inline -->
+      <h2 style="color: gold;">Arthas Menethil - O Rei Lich</h2>
+
+      <!-- Texto descritivo -->
+      <p>
+        Arthas era o príncipe de Lordaeron e um paladino promissor...
+      </p>
+    </div>
+
+    <div class="box">
+      <img src="img/ilidan.png" alt="ilustração de Illidan Tempesfúria">
+      <h2 style="color: gold;">Illidan Tempesfúria - O Traidor</h2>
+      <p>
+        Illidan Tempesfúria nasceu entre os elfos noturnos...
+      </p>
+    </div>
+
+  </div>
+
+  
+  <!-- Container em formato grid (2 colunas) -->
+  <div class="imagens-grid">
+
+    <div class="box">
+      <img src="img/sylvanas.jpg" alt="ilustração de Sylvanas Windrunner">
+      <h2 style="color: gold;">Sylvanas Windrunner - A Rainha Banshee</h2>
+      <p>
+        Antiga general dos elfos, Sylvanas foi morta por Arthas...
+      </p>
+    </div>
+
+    <div class="box">
+      <img src="img/thrall.png" alt="ilustração de Thrall">
+      <h2 style="color: gold;">Thrall - O Libertador da Horda</h2>
+      <p>
+        Nascido como Go’el, Thrall passou a infância como escravo...
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+  </main>
+
+  <!-- 
+  Rodapé da página
+  -->
+  <footer>
+
+    <!-- Texto de direitos autorais -->
+    <p>© 2025 World of Warcraft Portal. Todos os direitos reservados.</p>
+
+  </footer>
+
+  <!-- 
+  Importa um arquivo JavaScript externo
+  (provavelmente usado para interações, como carrossel)
+  -->
+  <script src="script.js"></script>
+
+</body>
+</html>
+
+<!-- 
+Resumo geral:
+
+- Estrutura completa de uma página HTML
+- <header> → topo com menu
+- <main> → conteúdo principal
+- <section> → organização de conteúdo
+- Classes CSS controlam layout (flex e grid)
+- <footer> → rodapé
+- CSS externo + interno
+- script.js adiciona comportamento
+
+Esse tipo de página mistura:
+HTML (estrutura) + CSS (visual) + JS (interação)
+-->
