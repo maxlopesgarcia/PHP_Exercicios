@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Consulta — HTML, CSS e PHP</title>
+    <style>
+        /* =====================================================================
+           RESET E BASE
+           Zera margens/paddings padrão do navegador e define fonte global.
+        ===================================================================== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f111a;
+            color: #cdd6f4;
+            line-height: 1.6;
+        }
+
+        /* =====================================================================
+           LAYOUT PRINCIPAL
+           Sidebar fixa à esquerda + conteúdo principal à direita.
+        ===================================================================== */
+        .layout {
+            display: flex;           /* Coloca sidebar e main lado a lado */
+            min-height: 100vh;
+        }
+
+        /* =====================================================================
+           SIDEBAR — menu de navegação lateral
+        ===================================================================== */
+        .sidebar {
+            width: 230px;
+            background: #1e2030;
+            padding: 20px 0;
+            position: sticky;       /* Fica fixo ao rolar a página */
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;         /* Não encolhe quando a janela é pequena */
+            border-right: 2px solid #313244;
+        }
+
+        .sidebar h2 {
+            color: #cba6f7;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0 20px 10px;
+            border-bottom: 1px solid #313244;
+            margin-bottom: 10px;
+        }
+
+        /* Links do menu lateral */
+        .sidebar a {
+            display: block;
+            padding: 7px 20px;
+            color: #a6adc8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar a:hover {
+            color: #cdd6f4;
+            background: #313244;
+            border-left-color: #cba6f7;
+        }
+
+        /* Separador de categoria no menu */
+        .sidebar .cat {
+            color: #585b70;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 15px 20px 3px;
+            letter-spacing: 0.08em;
+        }
+
+        /* =====================================================================
+           CONTEÚDO PRINCIPAL
+        ===================================================================== */
+        .content {
+            flex: 1;
+            padding: 40px;
+            max-width: 960px;
+        }
+
+        /* Título principal da página */
+        h1 {
+            font-size: 2rem;
+            color: #cba6f7;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6c7086;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        /* =====================================================================
+           SEÇÕES — cada bloco temático do guia
+        ===================================================================== */
+        section {
+            margin-bottom: 50px;
+        }
+
+        /* Títulos de seção (ex: "HTML — Estrutura Básica") */
+        h2 {
+            font-size: 1.4rem;
+            color: #89b4fa;
+            border-bottom: 2px solid #313244;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Subtítulos dentro de seção */
+        h3 {
+            color: #a6e3a1;
+            font-size: 1rem;
+            margin: 20px 0 8px;
+        }
+
+        /* Parágrafos de explicação */
+        p {
+            color: #a6adc8;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        /* =====================================================================
+           BLOCOS DE CÓDIGO
+           Estilo tipo editor de código (fundo escuro, fonte mono).
+        ===================================================================== */
+        pre {
+            background: #181825;
+            border: 1px solid #313244;
+            border-radius: 8px;
+            padding: 18px;
+            overflow-x: auto;
+            font-size: 0.87rem;
+            line-height: 1.7;
+            margin: 8px 0 18px;
+            position: relative;
+        }
+
+        /* Tag de linguagem no canto do bloco de código */
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.7rem;
+            color: #585b70;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        code {
+            font-family: 'Consolas', 'Fira Code', monospace;
+            color: #cdd6f4;
+        }
+
+        /* =====================================================================
+           DESTAQUE DE SINTAXE MANUAL (via spans)
+           Cada cor representa um tipo de token no código.
+        ===================================================================== */
+        .kw  { color: #cba6f7; }   /* palavras-chave: if, for, function, etc. */
+        .fn  { color: #89b4fa; }   /* funções: echo, array_map, etc. */
+        .str { color: #a6e3a1; }   /* strings entre aspas */
+        .var { color: #fab387; }   /* variáveis PHP: $nome */
+        .num { color: #f9e2af; }   /* números */
+        .cmt { color: #585b70; font-style: italic; }  /* comentários */
+        .tag { color: #f38ba8; }   /* tags HTML */
+        .atr { color: #89dceb; }   /* atributos HTML */
+        .val { color: #a6e3a1; }   /* valores de atributos */
+        .sel { color: #cba6f7; }   /* seletores CSS */
+        .prop{ color: #89b4fa; }   /* propriedades CSS */
+
+        /* =====================================================================
+           CARDS DE DESTAQUE
+           Caixas coloridas para dicas importantes, avisos, etc.
+        ===================================================================== */
+        .card {
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            font-size: 0.9rem;
+            border-left: 4px solid;
+        }
+
+        .card.tip   { background: #1e2a1e; border-color: #a6e3a1; color: #a6e3a1; }
+        .card.warn  { background: #2a2a1e; border-color: #f9e2af; color: #f9e2af; }
+        .card.info  { background: #1e1e2a; border-color: #89b4fa; color: #89b4fa; }
+        .card.danger{ background: #2a1e1e; border-color: #f38ba8; color: #f38ba8; }
+
+        /* =====================================================================
+           TABELA DE REFERÊNCIA RÁPIDA
+        ===================================================================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 18px;
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: #313244;
+            color: #cba6f7;
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #313244;
+            color: #a6adc8;
+        }
+
+        td code { color: #fab387; background: #181825; padding: 2px 6px; border-radius: 4px; }
+
+        tr:hover td { background: #1e2030; }
+
+        /* =====================================================================
+           RODAPÉ
+        ===================================================================== */
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #313244;
+            color: #45475a;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- ====================================================================
+         SIDEBAR — NAVEGAÇÃO LATERAL
+    ==================================================================== -->
+    <nav class="sidebar">
+        <h2>Guia Web</h2>
+
+        <span class="cat">HTML</span>
+        <a href="#html-estrutura">Estrutura Básica</a>
+        <a href="#html-tags">Tags Essenciais</a>
+        <a href="#html-form">Formulários</a>
+        <a href="#html-tabela">Tabelas</a>
+
+        <span class="cat">CSS</span>
+        <a href="#css-seletores">Seletores</a>
+        <a href="#css-box">Box Model</a>
+        <a href="#css-flex">Flexbox</a>
+
+        <span class="cat">PHP — Fundamentos</span>
+        <a href="#php-variaveis">Variáveis e Tipos</a>
+        <a href="#php-saida">Saída de Dados</a>
+        <a href="#php-operadores">Operadores</a>
+        <a href="#php-condicionais">Condicionais</a>
+        <a href="#php-loops">Loops</a>
+        <a href="#php-funcoes">Funções</a>
+        <a href="#php-arrays">Arrays</a>
+        <a href="#php-strings">Funções de String</a>
+
+        <span class="cat">PHP — Avançado</span>
+        <a href="#php-get-post">$_GET e $_POST</a>
+        <a href="#php-include">include / require</a>
+        <a href="#php-match">match()</a>
+        <a href="#php-arrow">Arrow Functions</a>
+        <a href="#php-datetime">DateTime</a>
+        <a href="#php-seguranca">Segurança</a>
+
+        <span class="cat">Padrões do Projeto</span>
+        <a href="#padrao-roteamento">Roteamento com GET</a>
+        <a href="#padrao-form-tabela">Form → Tabela</a>
+        <a href="#padrao-helpers">Arquivo de Funções</a>
+
+        <span class="cat">PHP — Closures &amp; Arrays</span>
+        <a href="#php-closures">Funções Anônimas</a>
+        <a href="#php-array-map">array_map</a>
+    </nav>
+
+    <!-- ====================================================================
+         CONTEÚDO PRINCIPAL
+    ==================================================================== -->
+    <main class="content">
+
+        <h1>Guia de Consulta — Web</h1>
+        <p class="subtitle">HTML · CSS · PHP &nbsp;|&nbsp; Baseado nos exercícios das aulas 1 a 4</p>
+
+        <!-- ================================================================
+             SEÇÃO: HTML — ESTRUTURA BÁSICA
+        ================================================================ -->
+        <section id="html-estrutura">
+            <h2>HTML — Estrutura Básica</h2>
+
+            <p>
+                HTML é a linguagem de marcação das páginas web. Todo arquivo começa com
+                <code>&lt;!DOCTYPE html&gt;</code>, que avisa ao navegador qual versão do HTML está sendo usada.
+            </p>
+
+            <pre data-lang="HTML"><code><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="atr">lang=</span><span class="val">"pt-br"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+    <span class="cmt">&lt;!-- Define o charset para acentuação funcionar --&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="atr">charset=</span><span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+
+    <span class="cmt">&lt;!-- Responsividade: adapta para celulares --&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="atr">name=</span><span class="val">"viewport"</span> <span class="atr">content=</span><span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;title&gt;</span>Título da Aba<span class="tag">&lt;/title&gt;</span>
+
+    <span class="cmt">&lt;!-- Vincula um arquivo CSS externo --&gt;</span>
+    <span class="tag">&lt;link</span> <span class="atr">rel=</span><span class="val">"stylesheet"</span> <span class="atr">href=</span><span class="val">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+
+    <span class="tag">&lt;header&gt;</span><span class="cmt">&lt;!-- cabeçalho --&gt;</span><span class="tag">&lt;/header&gt;</span>
+    <span class="tag">&lt;nav&gt;</span><span class="cmt">&lt;!-- menu de navegação --&gt;</span><span class="tag">&lt;/nav&gt;</span>
+    <span class="tag">&lt;main&gt;</span><span class="cmt">&lt;!-- conteúdo principal --&gt;</span><span class="tag">&lt;/main&gt;</span>
+    <span class="tag">&lt;footer&gt;</span><span class="cmt">&lt;!-- rodapé --&gt;</span><span class="tag">&lt;/footer&gt;</span>
+
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+
+            <div class="card info">
+                <strong>Semântica:</strong> usar as tags corretas (<code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>)
+                ajuda motores de busca e leitores de tela a entenderem a estrutura da página.
+            </div>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: HTML — TAGS ESSENCIAIS
+        ================================================================ -->
+        <section id="html-tags">
+            <h2>HTML — Tags Essenciais</h2>
+
+            <table>
+                <thead><tr><th>Tag</th><th>Para que serve</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><code>&lt;h1&gt; … &lt;h6&gt;</code></td><td>Títulos (h1 = maior, h6 = menor)</td><td><code>&lt;h1&gt;Título&lt;/h1&gt;</code></td></tr>
+                    <tr><td><code>&lt;p&gt;</code></td><td>Parágrafo de texto</td><td><code>&lt;p&gt;Texto&lt;/p&gt;</code></td></tr>
+                    <tr><td><code>&lt;a&gt;</code></td><td>Link clicável</td><td><code>&lt;a href="url"&gt;Link&lt;/a&gt;</code></td></tr>
+                    <tr><td><code>&lt;img&gt;</code></td><td>Imagem</td><td><code>&lt;img src="foto.jpg" alt="desc"&gt;</code></td></tr>
+                    <tr><td><code>&lt;br&gt;</code></td><td>Quebra de linha</td><td><code>texto&lt;br&gt;nova linha</code></td></tr>
+                    <tr><td><code>&lt;hr&gt;</code></td><td>Linha horizontal separadora</td><td><code>&lt;hr&gt;</code></td></tr>
+                    <tr><td><code>&lt;div&gt;</code></td><td>Contêiner genérico (bloco)</td><td><code>&lt;div class="box"&gt;…&lt;/div&gt;</code></td></tr>
+                    <tr><td><code>&lt;span&gt;</code></td><td>Contêiner genérico (inline)</td><td><code>&lt;span&gt;texto&lt;/span&gt;</code></td></tr>
+                    <tr><td><code>&lt;ul&gt; / &lt;ol&gt;</code></td><td>Lista não-ordenada / ordenada</td><td><code>&lt;ul&gt;&lt;li&gt;item&lt;/li&gt;&lt;/ul&gt;</code></td></tr>
+                    <tr><td><code>&lt;strong&gt;</code></td><td>Negrito semântico</td><td><code>&lt;strong&gt;importante&lt;/strong&gt;</code></td></tr>
+                    <tr><td><code>&lt;small&gt;</code></td><td>Texto menor (ex: copyright)</td><td><code>&lt;small&gt;&amp;copy; 2026&lt;/small&gt;</code></td></tr>
+                    <tr><td><code>&lt;section&gt;</code></td><td>Seção temática da página</td><td><code>&lt;section&gt;…&lt;/section&gt;</code></td></tr>
+                </tbody>
+            </table>
+
+            <h3>Entidades HTML úteis</h3>
+            <table>
+                <thead><tr><th>Entidade</th><th>Símbolo</th></tr></thead>
+                <tbody>
+                    <tr><td><code>&amp;copy;</code></td><td>©</td></tr>
+                    <tr><td><code>&amp;amp;</code></td><td>&amp;</td></tr>
+                    <tr><td><code>&amp;lt;</code></td><td>&lt;</td></tr>
+                    <tr><td><code>&amp;gt;</code></td><td>&gt;</td></tr>
+                    <tr><td><code>&amp;nbsp;</code></td><td>Espaço fixo</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: HTML — FORMULÁRIOS
+        ================================================================ -->
+        <section id="html-form">
+            <h2>HTML — Formulários</h2>
+
+            <p>
+                Formulários coletam dados do usuário. O atributo <code>method</code> define como os dados
+                são enviados; <code>action</code> define para onde vão.
+            </p>
+
+            <pre data-lang="HTML"><code><span class="cmt">&lt;!--
+  method="post"  → dados viajam no corpo da requisição (mais seguro, invisível na URL)
+  method="get"   → dados aparecem na URL (?campo=valor)
+  action="..."   → para onde os dados são enviados (ex: outra página PHP)
+--&gt;</span>
+<span class="tag">&lt;form</span> <span class="atr">action=</span><span class="val">"?abobora=resultado"</span> <span class="atr">method=</span><span class="val">"post"</span><span class="tag">&gt;</span>
+
+    <span class="cmt">&lt;!-- label conecta ao input pelo id (acessibilidade) --&gt;</span>
+    <span class="tag">&lt;label</span> <span class="atr">for=</span><span class="val">"nome"</span><span class="tag">&gt;</span>Nome:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"text"</span>     <span class="atr">name=</span><span class="val">"nome"</span>      <span class="atr">id=</span><span class="val">"nome"</span><span class="tag">&gt;&lt;br&gt;</span>
+
+    <span class="tag">&lt;label</span> <span class="atr">for=</span><span class="val">"email"</span><span class="tag">&gt;</span>E-mail:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"email"</span>    <span class="atr">name=</span><span class="val">"email"</span>     <span class="atr">id=</span><span class="val">"email"</span><span class="tag">&gt;&lt;br&gt;</span>
+    <span class="cmt">&lt;!-- type="email" valida o formato automaticamente no navegador --&gt;</span>
+
+    <span class="tag">&lt;label</span> <span class="atr">for=</span><span class="val">"senha"</span><span class="tag">&gt;</span>Senha:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"password"</span> <span class="atr">name=</span><span class="val">"senha"</span>     <span class="atr">id=</span><span class="val">"senha"</span><span class="tag">&gt;&lt;br&gt;</span>
+    <span class="cmt">&lt;!-- type="password" oculta os caracteres digitados --&gt;</span>
+
+    <span class="tag">&lt;label</span> <span class="atr">for=</span><span class="val">"data_nasc"</span><span class="tag">&gt;</span>Data de Nascimento:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"date"</span>     <span class="atr">name=</span><span class="val">"data_nasc"</span>  <span class="atr">id=</span><span class="val">"data_nasc"</span><span class="tag">&gt;&lt;br&gt;</span>
+    <span class="cmt">&lt;!-- type="date" abre um calendário para o usuário escolher --&gt;</span>
+
+    <span class="tag">&lt;label</span> <span class="atr">for=</span><span class="val">"hora"</span><span class="tag">&gt;</span>Hora:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"time"</span>     <span class="atr">name=</span><span class="val">"hora"</span>      <span class="atr">id=</span><span class="val">"hora"</span><span class="tag">&gt;&lt;br&gt;</span>
+
+    <span class="tag">&lt;label</span> <span class="atr">for=</span><span class="val">"genero"</span><span class="tag">&gt;</span>Gênero:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;select</span> <span class="atr">name=</span><span class="val">"genero"</span> <span class="atr">id=</span><span class="val">"genero"</span><span class="tag">&gt;</span>
+        <span class="cmt">&lt;!-- cada &lt;option&gt; é um item da lista suspensa --&gt;</span>
+        <span class="tag">&lt;option</span> <span class="atr">value=</span><span class="val">"m"</span><span class="tag">&gt;</span>Masculino<span class="tag">&lt;/option&gt;</span>
+        <span class="tag">&lt;option</span> <span class="atr">value=</span><span class="val">"f"</span><span class="tag">&gt;</span>Feminino<span class="tag">&lt;/option&gt;</span>
+        <span class="tag">&lt;option</span> <span class="atr">value=</span><span class="val">"o"</span><span class="tag">&gt;</span>Outro<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;/select&gt;&lt;br&gt;</span>
+
+    <span class="tag">&lt;button</span> <span class="atr">type=</span><span class="val">"submit"</span><span class="tag">&gt;</span>Enviar<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;/form&gt;</span></code></pre>
+
+            <div class="card warn">
+                <strong>Lembre-se:</strong> o atributo <code>name</code> no input é o que o PHP usa para recuperar o valor
+                (<code>$_POST["nome"]</code>). Sem ele, o campo não chega ao servidor.
+            </div>
+
+            <h3>Tipos de input mais comuns</h3>
+            <table>
+                <thead><tr><th>type=</th><th>Comportamento</th></tr></thead>
+                <tbody>
+                    <tr><td><code>text</code></td><td>Campo de texto livre</td></tr>
+                    <tr><td><code>email</code></td><td>Valida formato de e-mail no browser</td></tr>
+                    <tr><td><code>password</code></td><td>Oculta os caracteres</td></tr>
+                    <tr><td><code>date</code></td><td>Calendário para escolher data</td></tr>
+                    <tr><td><code>time</code></td><td>Relógio para escolher hora</td></tr>
+                    <tr><td><code>number</code></td><td>Apenas números</td></tr>
+                    <tr><td><code>checkbox</code></td><td>Caixa de marcação (sim/não)</td></tr>
+                    <tr><td><code>radio</code></td><td>Escolha única entre opções</td></tr>
+                    <tr><td><code>submit</code></td><td>Botão de envio do form</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: HTML — TABELAS
+        ================================================================ -->
+        <section id="html-tabela">
+            <h2>HTML — Tabelas</h2>
+
+            <pre data-lang="HTML"><code><span class="tag">&lt;table&gt;</span>
+    <span class="cmt">&lt;!-- thead = cabeçalho da tabela --&gt;</span>
+    <span class="tag">&lt;thead&gt;</span>
+        <span class="tag">&lt;tr&gt;</span>                         <span class="cmt">&lt;!-- tr = linha (table row) --&gt;</span>
+            <span class="tag">&lt;th&gt;</span>Nome<span class="tag">&lt;/th&gt;</span>              <span class="cmt">&lt;!-- th = célula de cabeçalho (negrito por padrão) --&gt;</span>
+            <span class="tag">&lt;th&gt;</span>E-mail<span class="tag">&lt;/th&gt;</span>
+            <span class="tag">&lt;th&gt;</span>Idade<span class="tag">&lt;/th&gt;</span>
+        <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;/thead&gt;</span>
+
+    <span class="cmt">&lt;!-- tbody = corpo da tabela --&gt;</span>
+    <span class="tag">&lt;tbody&gt;</span>
+        <span class="tag">&lt;tr&gt;</span>
+            <span class="tag">&lt;td&gt;</span>Max<span class="tag">&lt;/td&gt;</span>               <span class="cmt">&lt;!-- td = célula de dado --&gt;</span>
+            <span class="tag">&lt;td&gt;</span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a070b122a0f070b030644090507">[email&#160;protected]</a><span class="tag">&lt;/td&gt;</span>
+            <span class="tag">&lt;td&gt;</span>20<span class="tag">&lt;/td&gt;</span>
+        <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: CSS — SELETORES
+        ================================================================ -->
+        <section id="css-seletores">
+            <h2>CSS — Seletores</h2>
+
+            <p>CSS define a aparência dos elementos HTML. É vinculado via <code>&lt;link&gt;</code> no head
+            ou dentro de <code>&lt;style&gt;</code>.</p>
+
+            <pre data-lang="CSS"><code><span class="cmt">/* Seletor de tag — afeta todos os elementos desse tipo */</span>
+<span class="sel">body</span> {
+    <span class="prop">background-color</span>: #ddd;
+    <span class="prop">margin</span>: <span class="num">0</span>;
+    <span class="prop">padding</span>: <span class="num">0</span>;
+}
+
+<span class="cmt">/* Seletor de classe — afeta elementos com class="box" */</span>
+<span class="sel">.box</span> { <span class="prop">border</span>: 1px solid black; }
+
+<span class="cmt">/* Seletor de id — afeta o elemento com id="titulo" (único na página) */</span>
+<span class="sel">#titulo</span> { <span class="prop">color</span>: blue; }
+
+<span class="cmt">/* Seletor descendente — links dentro de nav */</span>
+<span class="sel">nav a</span> {
+    <span class="prop">color</span>: #fff;
+    <span class="prop">text-decoration</span>: none;  <span class="cmt">/* remove o sublinhado */</span>
+    <span class="prop">font-weight</span>: bold;
+    <span class="prop">padding</span>: 10px 20px;
+}
+
+<span class="cmt">/* Pseudo-classe :hover — efeito ao passar o mouse */</span>
+<span class="sel">nav a:hover</span> {
+    <span class="prop">background-color</span>: #444;
+}
+
+<span class="cmt">/* Múltiplos seletores ao mesmo tempo */</span>
+<span class="sel">header, footer</span> {
+    <span class="prop">background-color</span>: #333;
+    <span class="prop">color</span>: #fff;
+    <span class="prop">padding</span>: 10px 20px;
+}</code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: CSS — BOX MODEL
+        ================================================================ -->
+        <section id="css-box">
+            <h2>CSS — Box Model</h2>
+
+            <p>Todo elemento HTML é uma caixa. O Box Model define como o espaço é calculado:</p>
+
+            <pre data-lang="CSS"><code><span class="sel">.elemento</span> {
+    <span class="prop">width</span>:   200px;    <span class="cmt">/* largura do conteúdo */</span>
+    <span class="prop">height</span>:  100px;    <span class="cmt">/* altura do conteúdo */</span>
+    <span class="prop">padding</span>: 10px;     <span class="cmt">/* espaço INTERNO (entre conteúdo e borda) */</span>
+    <span class="prop">border</span>:  2px solid black; <span class="cmt">/* borda */</span>
+    <span class="prop">margin</span>:  20px;     <span class="cmt">/* espaço EXTERNO (entre este elemento e os vizinhos) */</span>
+}
+
+<span class="cmt">/* box-sizing: border-box faz o padding ser contado DENTRO da width,
+   evitando que o elemento fique maior que o esperado. */</span>
+<span class="sel">*</span> { <span class="prop">box-sizing</span>: border-box; }</code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: CSS — FLEXBOX
+        ================================================================ -->
+        <section id="css-flex">
+            <h2>CSS — Flexbox</h2>
+
+            <p>Flexbox é usado para organizar elementos em linha ou coluna de forma fácil.</p>
+
+            <pre data-lang="CSS"><code><span class="sel">.container</span> {
+    <span class="prop">display</span>: flex;                <span class="cmt">/* ativa o flexbox */</span>
+    <span class="prop">flex-direction</span>: row;          <span class="cmt">/* row (padrão) = horizontal | column = vertical */</span>
+    <span class="prop">justify-content</span>: space-between; <span class="cmt">/* distribui os filhos na direção principal */</span>
+    <span class="prop">align-items</span>: center;          <span class="cmt">/* centraliza na direção perpendicular */</span>
+    <span class="prop">gap</span>: 10px;                    <span class="cmt">/* espaço entre os filhos */</span>
+}
+
+<span class="sel">.filho</span> {
+    <span class="prop">flex</span>: 1;  <span class="cmt">/* cada filho ocupa espaço igual */</span>
+}</code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — VARIÁVEIS E TIPOS
+        ================================================================ -->
+        <section id="php-variaveis">
+            <h2>PHP — Variáveis e Tipos</h2>
+
+            <p>PHP é executado no <strong>servidor</strong>. Todo código fica entre <code>&lt;?php ... ?&gt;</code>.
+            Variáveis começam com <code>$</code> e não precisam declarar tipo (tipagem dinâmica).</p>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// Variáveis — o PHP descobre o tipo sozinho</span>
+<span class="var">$texto</span>  = <span class="str">"Olá, mundo"</span>;   <span class="cmt">// string</span>
+<span class="var">$numero</span> = <span class="num">42</span>;              <span class="cmt">// int (inteiro)</span>
+<span class="var">$preco</span>  = <span class="num">9.99</span>;            <span class="cmt">// float (decimal)</span>
+<span class="var">$ativo</span>  = <span class="kw">true</span>;            <span class="cmt">// bool (verdadeiro/falso)</span>
+<span class="var">$nada</span>   = <span class="kw">null</span>;            <span class="cmt">// null (sem valor)</span>
+
+<span class="cmt">// TypeCast — força a conversão de tipo</span>
+<span class="var">$inteiro</span> = (<span class="kw">int</span>)   <span class="str">"10abc"</span>;  <span class="cmt">// resultado: 10</span>
+<span class="var">$decimal</span> = (<span class="kw">float</span>) <span class="str">"3.14x"</span>; <span class="cmt">// resultado: 3.14</span>
+<span class="var">$bool</span>    = (<span class="kw">bool</span>)  <span class="num">0</span>;        <span class="cmt">// resultado: false  (0 é false, qualquer outro número é true)</span>
+
+<span class="cmt">// var_dump — mostra tipo E valor (ferramenta de debug)</span>
+<span class="fn">var_dump</span>(<span class="var">$inteiro</span>);  <span class="cmt">// int(10)</span>
+<span class="fn">var_dump</span>(<span class="var">$ativo</span>);    <span class="cmt">// bool(true)</span>
+
+<span class="cmt">// Constante — valor fixo que não muda durante a execução</span>
+<span class="fn">define</span>(<span class="str">"TAXA_JUROS"</span>, <span class="num">0.02</span>);
+<span class="fn">echo</span> TAXA_JUROS;  <span class="cmt">// 0.02  — constante NÃO usa $</span>
+
+<span class="tag">?&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — SAÍDA DE DADOS
+        ================================================================ -->
+        <section id="php-saida">
+            <h2>PHP — Saída de Dados</h2>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// echo — imprime na tela (mais usado)</span>
+<span class="fn">echo</span> <span class="str">"Olá mundo"</span>;
+<span class="fn">echo</span> <span class="str">"Linha 1\n"</span>;             <span class="cmt">// \n pula linha no código-fonte</span>
+<span class="fn">echo</span> <span class="str">"Linha 1&lt;br&gt;"</span>;          <span class="cmt">// &lt;br&gt; pula linha visualmente no navegador</span>
+<span class="fn">echo</span> <span class="str">"Valor: "</span> . <span class="var">$numero</span>;   <span class="cmt">// . (ponto) concatena strings</span>
+<span class="fn">echo</span> <span class="str">"Valor: <span class="var">$numero</span>"</span>;      <span class="cmt">// variável dentro de aspas duplas é interpolada</span>
+
+<span class="cmt">// print — similar ao echo, mas retorna 1 (pouco usado)</span>
+<span class="fn">print</span>(<span class="str">"Olá"</span>);
+
+<span class="cmt">// <?= ... ?> — atalho para echo (muito usado no HTML)</span>
+<span class="tag">?&gt;</span>
+<span class="tag">&lt;p&gt;</span>Meu nome é <span class="tag">&lt;?=</span> <span class="var">$nome</span> ?? <span class="str">""</span> <span class="tag">?&gt;&lt;/p&gt;</span>
+<span class="tag">&lt;?php</span>
+
+<span class="cmt">// print_r — exibe arrays de forma legível (sem tipos)</span>
+<span class="fn">print_r</span>(<span class="var">$array</span>);
+
+<span class="cmt">// var_dump — exibe arrays/variáveis com TIPO e VALOR (debug)</span>
+<span class="fn">echo</span> <span class="str">"&lt;pre&gt;"</span>;
+    <span class="fn">var_dump</span>(<span class="var">$array</span>);
+<span class="fn">echo</span> <span class="str">"&lt;/pre&gt;"</span>;   <span class="cmt">// &lt;pre&gt; mantém indentação legível</span>
+
+<span class="tag">?&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — OPERADORES
+        ================================================================ -->
+        <section id="php-operadores">
+            <h2>PHP — Operadores</h2>
+
+            <table>
+                <thead><tr><th>Operador</th><th>Nome</th><th>Exemplo</th><th>Resultado</th></tr></thead>
+                <tbody>
+                    <tr><td><code>+  -  *  /</code></td><td>Aritméticos</td><td><code>10 + 5</code></td><td><code>15</code></td></tr>
+                    <tr><td><code>%</code></td><td>Módulo (resto)</td><td><code>10 % 3</code></td><td><code>1</code></td></tr>
+                    <tr><td><code>.</code></td><td>Concatenação</td><td><code>"a" . "b"</code></td><td><code>"ab"</code></td></tr>
+                    <tr><td><code>==</code></td><td>Igual (valor)</td><td><code>1 == "1"</code></td><td><code>true</code></td></tr>
+                    <tr><td><code>===</code></td><td>Idêntico (valor + tipo)</td><td><code>1 === "1"</code></td><td><code>false</code></td></tr>
+                    <tr><td><code>!=</code></td><td>Diferente</td><td><code>1 != 2</code></td><td><code>true</code></td></tr>
+                    <tr><td><code>!==</code></td><td>Não-idêntico</td><td><code>1 !== "1"</code></td><td><code>true</code></td></tr>
+                    <tr><td><code>&amp;&amp;</code></td><td>E lógico</td><td><code>true &amp;&amp; false</code></td><td><code>false</code></td></tr>
+                    <tr><td><code>||</code></td><td>OU lógico</td><td><code>true || false</code></td><td><code>true</code></td></tr>
+                    <tr><td><code>!</code></td><td>NÃO lógico</td><td><code>!true</code></td><td><code>false</code></td></tr>
+                    <tr><td><code>??</code></td><td>Null coalesce</td><td><code>$x ?? "padrão"</code></td><td>valor de $x, ou "padrão" se null/não existir</td></tr>
+                    <tr><td><code>? :</code></td><td>Ternário</td><td><code>$a > $b ? "sim" : "não"</code></td><td>"sim" ou "não"</td></tr>
+                </tbody>
+            </table>
+
+            <div class="card info">
+                <strong>Use <code>===</code> (triplo) em comparações importantes!</strong> O <code>==</code> converte tipos antes de comparar, o que pode gerar resultados inesperados. O <code>===</code> exige que valor <em>e</em> tipo sejam idênticos.
+            </div>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — CONDICIONAIS
+        ================================================================ -->
+        <section id="php-condicionais">
+            <h2>PHP — Condicionais</h2>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// ── IF / ELSEIF / ELSE ───────────────────────────────────────────────</span>
+<span class="var">$hora</span> = <span class="num">14</span>;
+
+<span class="kw">if</span> (<span class="var">$hora</span> >= <span class="num">0</span> && <span class="var">$hora</span> < <span class="num">12</span>) {
+    <span class="fn">echo</span> <span class="str">"Manhã"</span>;
+} <span class="kw">elseif</span> (<span class="var">$hora</span> >= <span class="num">12</span> && <span class="var">$hora</span> < <span class="num">18</span>) {
+    <span class="fn">echo</span> <span class="str">"Tarde"</span>;
+} <span class="kw">else</span> {
+    <span class="fn">echo</span> <span class="str">"Noite"</span>;
+}
+
+<span class="cmt">// ── ISSET — verifica se variável existe e não é null ─────────────────</span>
+<span class="kw">if</span> (!<span class="fn">isset</span>(<span class="var">$pagina</span>)) {
+    <span class="var">$pagina</span> = <span class="str">"home"</span>;  <span class="cmt">// define valor padrão se não existir</span>
+}
+
+<span class="cmt">// ── SWITCH — múltiplas opções com um valor ───────────────────────────</span>
+<span class="kw">switch</span> (<span class="var">$pagina</span>) {
+    <span class="kw">case</span> <span class="str">"home"</span>:
+        <span class="fn">echo</span> <span class="str">"Página Inicial"</span>;
+        <span class="kw">break</span>;               <span class="cmt">// SEMPRE use break para não "cair" no próximo case</span>
+    <span class="kw">case</span> <span class="str">"sobre"</span>:
+        <span class="fn">echo</span> <span class="str">"Sobre Nós"</span>;
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        <span class="fn">echo</span> <span class="str">"Página não encontrada"</span>;
+        <span class="kw">break</span>;
+}
+
+<span class="cmt">// ── OPERADOR TERNÁRIO — if/else em uma linha ─────────────────────────</span>
+<span class="var">$resultado</span> = (<span class="var">$senha</span> === <span class="var">$confSenha</span>) ? <span class="str">"Sim"</span> : <span class="str">"Não"</span>;
+
+<span class="tag">?&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — LOOPS
+        ================================================================ -->
+        <section id="php-loops">
+            <h2>PHP — Loops (Laços de Repetição)</h2>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// ── FOR — quando você sabe quantas vezes vai repetir ─────────────────</span>
+<span class="kw">for</span> (<span class="var">$i</span> = <span class="num">1</span>; <span class="var">$i</span> <= <span class="num">10</span>; <span class="var">$i</span>++) {
+    <span class="fn">echo</span> <span class="str">"$i x 5 = "</span> . (<span class="var">$i</span> * <span class="num">5</span>) . <span class="str">"&lt;br&gt;"</span>;
+}
+<span class="cmt">//   ↑ início  ↑ condição    ↑ incremento a cada iteração</span>
+
+<span class="cmt">// ── FOR aninhado — loops dentro de loops (ex: tabuada) ───────────────</span>
+<span class="kw">for</span> (<span class="var">$i</span> = <span class="num">1</span>; <span class="var">$i</span> <= <span class="num">10</span>; <span class="var">$i</span>++) {
+    <span class="fn">echo</span> <span class="str">"&lt;h3&gt;Tabuada do $i&lt;/h3&gt;"</span>;
+    <span class="kw">for</span> (<span class="var">$j</span> = <span class="num">1</span>; <span class="var">$j</span> <= <span class="num">10</span>; <span class="var">$j</span>++) {
+        <span class="fn">echo</span> <span class="str">"$i x $j = "</span> . (<span class="var">$i</span> * <span class="var">$j</span>) . <span class="str">"&lt;br&gt;"</span>;
+    }
+}
+
+<span class="cmt">// ── WHILE — repete ENQUANTO a condição for verdadeira ────────────────</span>
+<span class="var">$i</span> = <span class="num">0</span>;
+<span class="kw">while</span> (<span class="var">$i</span> < <span class="num">5</span>) {
+    <span class="fn">echo</span> <span class="var">$i</span> . <span class="str">"&lt;br&gt;"</span>;
+    <span class="var">$i</span>++;   <span class="cmt">// cuidado: sem isso vira loop infinito</span>
+}
+
+<span class="cmt">// ── FOREACH — para percorrer ARRAYS ─────────────────────────────────</span>
+<span class="var">$frutas</span> = [<span class="str">"maçã"</span>, <span class="str">"banana"</span>, <span class="str">"uva"</span>];
+
+<span class="kw">foreach</span> (<span class="var">$frutas</span> <span class="kw">as</span> <span class="var">$fruta</span>) {
+    <span class="fn">echo</span> <span class="var">$fruta</span> . <span class="str">"&lt;br&gt;"</span>;
+}
+
+<span class="cmt">// Com key => value (índice e valor)</span>
+<span class="kw">foreach</span> (<span class="var">$frutas</span> <span class="kw">as</span> <span class="var">$indice</span> => <span class="var">$fruta</span>) {
+    <span class="fn">echo</span> <span class="str">"$indice: $fruta &lt;br&gt;"</span>;
+}
+
+<span class="cmt">// Sintaxe alternativa do foreach (útil misturado com HTML)</span>
+<span class="kw">foreach</span> (<span class="var">$frutas</span> <span class="kw">as</span> <span class="var">$fruta</span>): <span class="tag">?&gt;</span>
+    <span class="tag">&lt;li&gt;</span><span class="tag">&lt;?=</span> <span class="var">$fruta</span> <span class="tag">?&gt;&lt;/li&gt;</span>
+<span class="tag">&lt;?php</span> <span class="kw">endforeach</span>; <span class="tag">?&gt;</span>
+
+<span class="cmt">// ── Referência &$ — modifica o array original dentro do loop ─────────</span>
+<span class="var">$vetor</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">6</span>, <span class="num">4</span>];
+<span class="kw">foreach</span> (<span class="var">$vetor</span> <span class="kw">as</span> <span class="kw">&</span><span class="var">$valor</span>) {     <span class="cmt">// & = passa por referência</span>
+    <span class="kw">if</span> (<span class="var">$valor</span> == <span class="num">6</span>) <span class="var">$valor</span>++;   <span class="cmt">// altera o 6 para 7 no array original</span>
+}</code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — FUNÇÕES
+        ================================================================ -->
+        <section id="php-funcoes">
+            <h2>PHP — Funções</h2>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// ── Função básica ────────────────────────────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">ola</span>() {
+    <span class="fn">echo</span> <span class="str">"&lt;br&gt;Olá!&lt;br&gt;"</span>;
+}
+<span class="fn">ola</span>();   <span class="cmt">// chama a função</span>
+
+
+<span class="cmt">// ── Função com parâmetros e retorno tipado ────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">soma</span>(<span class="var">$a</span>, <span class="var">$b</span>): <span class="kw">float</span> {   <span class="cmt">// : float = tipo de retorno obrigatório</span>
+    <span class="kw">return</span> <span class="var">$a</span> + <span class="var">$b</span>;
+}
+<span class="fn">echo</span> <span class="fn">soma</span>(<span class="num">10</span>, <span class="num">5</span>);   <span class="cmt">// 15</span>
+
+
+<span class="cmt">// ── Tipagem nos parâmetros ────────────────────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">calcularEmprestimo</span>(<span class="kw">float</span> <span class="var">$valor</span>, <span class="kw">int</span> <span class="var">$meses</span>): <span class="kw">float</span> {
+    <span class="kw">return</span> <span class="var">$valor</span> * (<span class="num">1</span> + (TAXA_JUROS * <span class="var">$meses</span>));
+}
+
+
+<span class="cmt">// ── Função que retorna array + desestruturação ────────────────────────</span>
+<span class="kw">function</span> <span class="fn">retornaVetor</span>() {
+    <span class="kw">return</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+}
+
+[<span class="var">$um</span>, <span class="var">$dois</span>, <span class="var">$tres</span>] = <span class="fn">retornaVetor</span>();
+<span class="cmt">// $um = 1, $dois = 2, $tres = 3</span>
+
+
+<span class="cmt">// ── Parâmetro com valor padrão ────────────────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">saudar</span>(<span class="var">$nome</span> = <span class="str">"visitante"</span>) {
+    <span class="fn">echo</span> <span class="str">"Olá, <span class="var">$nome</span>!"</span>;
+}
+<span class="fn">saudar</span>();           <span class="cmt">// Olá, visitante!</span>
+<span class="fn">saudar</span>(<span class="str">"Max"</span>);      <span class="cmt">// Olá, Max!</span>
+
+<span class="tag">?&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — ARRAYS
+        ================================================================ -->
+        <section id="php-arrays">
+            <h2>PHP — Arrays</h2>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// ── Array indexado (posições numéricas automáticas) ───────────────────</span>
+<span class="var">$frutas</span> = [<span class="str">"maçã"</span>, <span class="str">"banana"</span>, <span class="str">"uva"</span>];
+<span class="fn">echo</span> <span class="var">$frutas</span>[<span class="num">0</span>];   <span class="cmt">// maçã</span>
+
+
+<span class="cmt">// ── Array associativo (chave => valor) ────────────────────────────────</span>
+<span class="var">$usuario</span> = [
+    <span class="str">"nome"</span>  => <span class="str">"Max"</span>,
+    <span class="str">"email"</span> => <span class="str">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2c414d546c49414d4540024f4341">[email&#160;protected]</a>"</span>,
+    <span class="str">"idade"</span> => <span class="num">20</span>
+];
+<span class="fn">echo</span> <span class="var">$usuario</span>[<span class="str">"nome"</span>];   <span class="cmt">// Max</span>
+
+
+<span class="cmt">// ── Array multidimensional (array de arrays) ──────────────────────────</span>
+<span class="var">$usuarios</span> = [
+    [<span class="str">"id"</span> => <span class="num">1</span>, <span class="str">"nome"</span> => <span class="str">"Max"</span>,   <span class="str">"telefone"</span> => <span class="str">"99999-1111"</span>],
+    [<span class="str">"id"</span> => <span class="num">2</span>, <span class="str">"nome"</span> => <span class="str">"Karin"</span>, <span class="str">"telefone"</span> => <span class="str">"99999-2222"</span>],
+];
+<span class="fn">echo</span> <span class="var">$usuarios</span>[<span class="num">0</span>][<span class="str">"nome"</span>];  <span class="cmt">// Max</span>
+
+
+<span class="cmt">// ── array_map — aplica uma função em TODOS os itens ───────────────────</span>
+<span class="var">$nomes</span>     = [<span class="str">"max oliveira"</span>, <span class="str">"karin silva"</span>];
+<span class="var">$maiusculos</span> = <span class="fn">array_map</span>(<span class="str">'strtoupper'</span>, <span class="var">$nomes</span>);
+<span class="cmt">// ["MAX OLIVEIRA", "KARIN SILVA"]</span>
+
+<span class="cmt">// Com arrow function (PHP 7.4+)</span>
+<span class="var">$dobros</span> = <span class="fn">array_map</span>(<span class="kw">fn</span>(<span class="var">$n</span>) => <span class="var">$n</span> * <span class="num">2</span>, [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>]);
+<span class="cmt">// [2, 4, 6]</span>
+
+
+<span class="cmt">// ── Desestruturação de array com array_map ────────────────────────────</span>
+<span class="var">$chaves</span> = [<span class="str">"nome"</span>, <span class="str">"email"</span>, <span class="str">"senha"</span>];
+[<span class="var">$nome</span>, <span class="var">$email</span>, <span class="var">$senha</span>] = <span class="fn">array_map</span>(
+    <span class="kw">fn</span>(<span class="var">$key</span>) => <span class="fn">validaInput</span>(<span class="var">$_POST</span>[<span class="var">$key</span>]),
+    <span class="var">$chaves</span>
+);
+<span class="cmt">// Limpa e distribui os valores do formulário nas variáveis</span>
+
+
+<span class="cmt">// ── Outras funções de array úteis ─────────────────────────────────────</span>
+<span class="fn">count</span>(<span class="var">$array</span>);                <span class="cmt">// quantidade de itens</span>
+<span class="fn">in_array</span>(<span class="str">"Max"</span>, <span class="var">$array</span>);    <span class="cmt">// verifica se valor existe no array</span>
+<span class="fn">array_push</span>(<span class="var">$array</span>, <span class="str">"item"</span>);  <span class="cmt">// adiciona item ao final</span>
+<span class="fn">sort</span>(<span class="var">$array</span>);                 <span class="cmt">// ordena crescente</span>
+<span class="fn">array_keys</span>(<span class="var">$array</span>);          <span class="cmt">// retorna todas as chaves</span>
+<span class="fn">array_values</span>(<span class="var">$array</span>);        <span class="cmt">// retorna todos os valores</span>
+
+<span class="tag">?&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — FUNÇÕES DE STRING
+        ================================================================ -->
+        <section id="php-strings">
+            <h2>PHP — Funções de String</h2>
+
+            <table>
+                <thead><tr><th>Função</th><th>O que faz</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><code>strlen($s)</code></td><td>Conta os caracteres</td><td><code>strlen("Max") → 3</code></td></tr>
+                    <tr><td><code>strtoupper($s)</code></td><td>Tudo maiúsculo</td><td><code>strtoupper("max") → "MAX"</code></td></tr>
+                    <tr><td><code>strtolower($s)</code></td><td>Tudo minúsculo</td><td><code>strtolower("MAX") → "max"</code></td></tr>
+                    <tr><td><code>trim($s)</code></td><td>Remove espaços no início e fim</td><td><code>trim("  texto  ") → "texto"</code></td></tr>
+                    <tr><td><code>str_replace($b,$n,$s)</code></td><td>Substitui ocorrência</td><td><code>str_replace("a","@","max") → "m@x"</code></td></tr>
+                    <tr><td><code>explode($sep,$s)</code></td><td>Divide string em array</td><td><code>explode(":"," 14:30") → ["14","30"]</code></td></tr>
+                    <tr><td><code>implode($sep,$arr)</code></td><td>Une array em string</td><td><code>implode("-",["a","b"]) → "a-b"</code></td></tr>
+                    <tr><td><code>substr($s,$i,$tam)</code></td><td>Parte da string</td><td><code>substr("abcde",1,3) → "bcd"</code></td></tr>
+                    <tr><td><code>strpos($s,$b)</code></td><td>Posição de substring</td><td><code>strpos("email@","@") → 5</code></td></tr>
+                    <tr><td><code>number_format($n,2,',','.')</code></td><td>Formata número em moeda BR</td><td><code>number_format(1240,2,',','.') → "1.240,00"</code></td></tr>
+                    <tr><td><code>htmlspecialchars($s)</code></td><td>Converte &lt; &gt; em entidades HTML</td><td>Proteção contra XSS</td></tr>
+                    <tr><td><code>ucfirst($s)</code></td><td>Primeira letra maiúscula</td><td><code>ucfirst("max") → "Max"</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — $_GET E $_POST
+        ================================================================ -->
+        <section id="php-get-post">
+            <h2>PHP — $_GET e $_POST</h2>
+
+            <p>São <strong>superglobais</strong> — variáveis especiais do PHP que ficam disponíveis em qualquer arquivo.</p>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// ── $_GET — dados vindos da URL ───────────────────────────────────────</span>
+<span class="cmt">// URL: index.php?pagina=sobre&id=5</span>
+<span class="var">$pagina</span> = <span class="var">$_GET</span>[<span class="str">"pagina"</span>];     <span class="cmt">// "sobre"</span>
+<span class="var">$id</span>     = <span class="var">$_GET</span>[<span class="str">"id"</span>];         <span class="cmt">// "5"</span>
+
+<span class="cmt">// ?? — null coalesce: usa o valor se existir, senão usa o padrão</span>
+<span class="var">$pagina</span> = <span class="var">$_GET</span>[<span class="str">"pagina"</span>] ?? <span class="str">"home"</span>;
+
+
+<span class="cmt">// ── $_POST — dados vindos de um formulário (method="post") ────────────</span>
+<span class="cmt">// &lt;form method="post"&gt; envia os dados no corpo da requisição (não aparece na URL)</span>
+<span class="var">$nome</span>  = <span class="var">$_POST</span>[<span class="str">"nome"</span>];
+<span class="var">$email</span> = <span class="var">$_POST</span>[<span class="str">"email"</span>];
+
+<span class="cmt">// Sempre verifique se o formulário foi enviado antes de usar $_POST</span>
+<span class="kw">if</span> (<span class="fn">isset</span>(<span class="var">$_POST</span>[<span class="str">"nome"</span>])) {
+    <span class="var">$nome</span> = <span class="var">$_POST</span>[<span class="str">"nome"</span>];
+}
+
+<span class="tag">?&gt;</span></code></pre>
+
+            <table>
+                <thead><tr><th></th><th>$_GET</th><th>$_POST</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Origem</strong></td><td>URL (<code>?key=valor</code>)</td><td>Corpo do formulário</td></tr>
+                    <tr><td><strong>Visível</strong></td><td>Sim, na URL</td><td>Não</td></tr>
+                    <tr><td><strong>Segurança</strong></td><td>Menor (dados expostos)</td><td>Maior</td></tr>
+                    <tr><td><strong>Uso típico</strong></td><td>Navegação, filtros, roteamento</td><td>Login, cadastro, formulários</td></tr>
+                    <tr><td><strong>Limite de tamanho</strong></td><td>~2000 caracteres na URL</td><td>Sem limite prático</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — INCLUDE / REQUIRE
+        ================================================================ -->
+        <section id="php-include">
+            <h2>PHP — include / require</h2>
+
+            <p>Permitem dividir o site em arquivos menores e reutilizáveis (modularização).</p>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// include — inclui o arquivo; se não achar, dá WARNING e continua</span>
+<span class="fn">include</span> <span class="str">"./header.php"</span>;
+
+<span class="cmt">// require — inclui o arquivo; se não achar, dá FATAL ERROR e para tudo</span>
+<span class="fn">require</span> <span class="str">"./nav.php"</span>;
+
+<span class="cmt">// include_once / require_once — garantem que o arquivo seja incluído APENAS UMA VEZ
+// Útil quando vários arquivos incluem o mesmo helper</span>
+<span class="fn">require_once</span> <span class="str">"./helpers/functions.php"</span>;
+<span class="fn">include_once</span> <span class="str">"./footer.php"</span>;
+
+<span class="tag">?&gt;</span></code></pre>
+
+            <table>
+                <thead><tr><th>Comando</th><th>Erro se não achar</th><th>Inclui mais de uma vez?</th></tr></thead>
+                <tbody>
+                    <tr><td><code>include</code></td><td>Warning (continua)</td><td>Sim</td></tr>
+                    <tr><td><code>require</code></td><td>Fatal Error (para)</td><td>Sim</td></tr>
+                    <tr><td><code>include_once</code></td><td>Warning (continua)</td><td>Não</td></tr>
+                    <tr><td><code>require_once</code></td><td>Fatal Error (para)</td><td>Não</td></tr>
+                </tbody>
+            </table>
+
+            <div class="card tip">
+                Use <code>require_once</code> para arquivos de funções/helpers (críticos).
+                Use <code>include</code> para partes visuais como header e footer (não críticos).
+            </div>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — MATCH
+        ================================================================ -->
+        <section id="php-match">
+            <h2>PHP — match() (PHP 8+)</h2>
+
+            <p>
+                O <code>match</code> é uma alternativa moderna ao <code>switch</code>.
+                Compara com <code>===</code> (tipo + valor) e retorna um valor diretamente.
+            </p>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="var">$pagina</span> = <span class="str">"sobre"</span>;
+
+<span class="cmt">// SWITCH (forma antiga)</span>
+<span class="kw">switch</span> (<span class="var">$pagina</span>) {
+    <span class="kw">case</span> <span class="str">"home"</span>:
+        <span class="var">$arquivo</span> = <span class="str">"pages/home.php"</span>;
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">"sobre"</span>:
+        <span class="var">$arquivo</span> = <span class="str">"pages/sobre.php"</span>;
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        <span class="var">$arquivo</span> = <span class="str">"pages/404.php"</span>;
+}
+
+<span class="cmt">// MATCH (forma moderna — mais curta, sem break, sem "queda" de case)</span>
+<span class="var">$arquivo</span> = <span class="kw">match</span>(<span class="var">$pagina</span>) {
+    <span class="str">"home"</span>    => <span class="str">"pages/home.php"</span>,
+    <span class="str">"sobre"</span>   => <span class="str">"pages/sobre.php"</span>,
+    <span class="str">"contato"</span> => <span class="str">"pages/contato.php"</span>,
+    <span class="kw">default</span>   => <span class="str">"pages/404.php"</span>,   <span class="cmt">// obrigatório se não cobrir todos os casos</span>
+};
+
+<span class="cmt">// Uso direto com require_once (padrão do projeto)</span>
+<span class="fn">require_once</span> <span class="kw">match</span>(<span class="var">$pagina</span>) {
+    <span class="str">"home"</span> => <span class="str">"./paginas/home.php"</span>,
+    <span class="str">"form"</span> => <span class="str">"./paginas/formulario.php"</span>,
+    <span class="str">"tab"</span>  => <span class="str">"./paginas/tabela.php"</span>,
+    <span class="kw">default</span> => <span class="str">"./paginas/404.php"</span>,
+};
+
+<span class="cmt">// Match também pode ser usado com echo</span>
+<span class="fn">echo</span> <span class="str">"Resultado: "</span> . <span class="kw">match</span>(<span class="num">10</span> % <span class="num">2</span>) {
+    <span class="num">0</span> => <span class="str">"Par"</span>,
+    <span class="kw">default</span> => <span class="str">"Ímpar"</span>
+};
+
+<span class="tag">?&gt;</span></code></pre>
+
+            <div class="card warn">
+                <strong>match vs switch:</strong> Se o valor não casar com nenhum case e não tiver <code>default</code>,
+                o match lança um <code>UnhandledMatchError</code>. Sempre inclua o <code>default</code>.
+            </div>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — ARROW FUNCTIONS
+        ================================================================ -->
+        <section id="php-arrow">
+            <h2>PHP — Arrow Functions (fn) (PHP 7.4+)</h2>
+
+            <p>Forma curta de escrever funções anônimas. Muito usadas com <code>array_map</code>, <code>array_filter</code>, etc.</p>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// Função anônima tradicional</span>
+<span class="var">$dobro</span> = <span class="kw">function</span>(<span class="var">$n</span>) {
+    <span class="kw">return</span> <span class="var">$n</span> * <span class="num">2</span>;
+};
+
+<span class="cmt">// Arrow function — mesma coisa, bem mais curta</span>
+<span class="cmt">// fn(parâmetros) => expressão_de_retorno</span>
+<span class="var">$dobro</span> = <span class="kw">fn</span>(<span class="var">$n</span>) => <span class="var">$n</span> * <span class="num">2</span>;
+
+<span class="fn">echo</span> <span class="var">$dobro</span>(<span class="num">5</span>);   <span class="cmt">// 10</span>
+
+
+<span class="cmt">// Uso prático — array_map + arrow function</span>
+<span class="var">$chaves</span> = [<span class="str">"nome"</span>, <span class="str">"email"</span>, <span class="str">"senha"</span>];
+
+[<span class="var">$nome</span>, <span class="var">$email</span>, <span class="var">$senha</span>] = <span class="fn">array_map</span>(
+    <span class="kw">fn</span>(<span class="var">$key</span>) => <span class="fn">validaInput</span>(<span class="var">$_POST</span>[<span class="var">$key</span>]),
+    <span class="var">$chaves</span>
+);
+<span class="cmt">// Para cada chave, pega o valor do POST e passa pelo validaInput()
+// O resultado é desestruturado nas variáveis $nome, $email, $senha</span>
+
+<span class="tag">?&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — DATETIME
+        ================================================================ -->
+        <section id="php-datetime">
+            <h2>PHP — DateTime</h2>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// date() — retorna data/hora formatada (baseado no servidor)</span>
+<span class="fn">echo</span> <span class="fn">date</span>(<span class="str">"Y"</span>);           <span class="cmt">// 2026 (ano com 4 dígitos)</span>
+<span class="fn">echo</span> <span class="fn">date</span>(<span class="str">"d/m/Y"</span>);       <span class="cmt">// 09/04/2026</span>
+<span class="fn">echo</span> <span class="fn">date</span>(<span class="str">"H:i:s"</span>);       <span class="cmt">// 14:30:00</span>
+<span class="fn">echo</span> <span class="fn">date</span>(<span class="str">"d/m/Y H:i"</span>);   <span class="cmt">// 09/04/2026 14:30</span>
+
+
+<span class="cmt">// ── Calcular IDADE com DateTime ───────────────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">calcularIdade</span>(<span class="var">$data</span>): <span class="kw">int</span> {
+
+    <span class="cmt">// Cria um objeto DateTime com a data de nascimento</span>
+    <span class="var">$nascimento</span> = <span class="kw">new</span> <span class="fn">DateTime</span>(<span class="var">$data</span>);
+
+    <span class="cmt">// Cria um objeto com a data/hora atual</span>
+    <span class="var">$agora</span> = <span class="kw">new</span> <span class="fn">DateTime</span>();
+
+    <span class="cmt">// diff() calcula a diferença entre as duas datas</span>
+    <span class="cmt">// ->y retorna apenas os anos completos (a idade)</span>
+    <span class="kw">return</span> <span class="var">$agora</span>-><span class="fn">diff</span>(<span class="var">$nascimento</span>)-><span class="var">y</span>;
+}
+
+<span class="fn">echo</span> <span class="fn">calcularIdade</span>(<span class="str">"2000-03-15"</span>);   <span class="cmt">// 26</span>
+
+
+<span class="cmt">// ── Formatar data recebida de input[type=date] ────────────────────────</span>
+<span class="cmt">// O input date retorna: "2000-03-15" (YYYY-MM-DD)</span>
+<span class="var">$data</span>       = <span class="var">$_POST</span>[<span class="str">"data_nasc"</span>];      <span class="cmt">// "2000-03-15"</span>
+<span class="var">$dataObj</span>    = <span class="kw">new</span> <span class="fn">DateTime</span>(<span class="var">$data</span>);
+<span class="var">$dataFormatada</span> = <span class="var">$dataObj</span>-><span class="fn">format</span>(<span class="str">"d/m/Y"</span>);  <span class="cmt">// "15/03/2000"</span>
+
+<span class="tag">?&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — SEGURANÇA
+        ================================================================ -->
+        <section id="php-seguranca">
+            <h2>PHP — Segurança e Validação de Dados</h2>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+
+<span class="cmt">// ── validaInput — função que limpa dados recebidos ─────────────────────
+// SEMPRE use antes de exibir dados vindos do usuário na tela!</span>
+<span class="kw">function</span> <span class="fn">validaInput</span>(<span class="var">$dados</span>) {
+
+    <span class="cmt">// trim() — remove espaços do início e do fim
+    // Ex: "  Max  " → "Max"</span>
+    <span class="var">$dados</span> = <span class="fn">trim</span>(<span class="var">$dados</span>);
+
+    <span class="cmt">// htmlspecialchars() — converte caracteres especiais em entidades HTML
+    // Ex: &lt;script&gt; vira &amp;lt;script&amp;gt; (não é executado)
+    // Proteção contra XSS (Cross-Site Scripting)</span>
+    <span class="var">$dados</span> = <span class="fn">htmlspecialchars</span>(<span class="var">$dados</span>);
+
+    <span class="kw">return</span> <span class="var">$dados</span>;
+}
+
+<span class="cmt">// Uso prático</span>
+<span class="var">$nome</span> = <span class="fn">validaInput</span>(<span class="var">$_POST</span>[<span class="str">"nome"</span>]);
+
+
+<span class="cmt">// ── Verificar se formulário foi enviado antes de processar ─────────────</span>
+<span class="kw">if</span> (<span class="fn">isset</span>(<span class="var">$_POST</span>[<span class="str">"nome"</span>])) {
+    <span class="cmt">// processa os dados</span>
+}
+
+
+<span class="cmt">// ── Validar se senha == confirmação ───────────────────────────────────</span>
+<span class="var">$senhaConfere</span> = (<span class="var">$senha</span> === <span class="var">$confSenha</span>) ? <span class="str">"Sim"</span> : <span class="str">"Não"</span>;
+<span class="cmt">// Usa === (triplo) para comparar tipo + valor</span>
+
+
+<span class="cmt">// ── ?? (null coalesce) — evita erro ao acessar variável que pode não existir</span>
+<span class="tag">?&gt;</span>
+<span class="tag">&lt;td&gt;</span><span class="tag">&lt;?=</span> <span class="var">$nome</span> ?? <span class="str">""</span> <span class="tag">?&gt;&lt;/td&gt;</span>
+<span class="cmt">&lt;!-- Se $nome existir, mostra; se não, mostra string vazia --&gt;</span></code></pre>
+
+            <div class="card danger">
+                <strong>NUNCA exiba diretamente na tela o que veio do usuário</strong> sem passar por
+                <code>htmlspecialchars()</code> ou <code>validaInput()</code>. Um usuário malicioso pode
+                injetar código JavaScript na página (ataque XSS).
+            </div>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PADRÃO — ROTEAMENTO COM $_GET
+        ================================================================ -->
+        <section id="padrao-roteamento">
+            <h2>Padrão — Roteamento com $_GET + match()</h2>
+
+            <p>
+                Este é o padrão usado em todo o projeto para criar um "mini-sistema" sem framework.
+                Um único <code>index.php</code> lê a URL e carrega o arquivo correto.
+            </p>
+
+            <pre data-lang="PHP"><code><span class="cmt">&lt;!-- LINK NO MENU — passa o parâmetro pela URL --&gt;</span>
+<span class="tag">&lt;a</span> <span class="atr">href=</span><span class="val">"?page=home"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;a</span> <span class="atr">href=</span><span class="val">"?page=sobre"</span><span class="tag">&gt;</span>Sobre<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;a</span> <span class="atr">href=</span><span class="val">"?page=contato"</span><span class="tag">&gt;</span>Contato<span class="tag">&lt;/a&gt;</span></code></pre>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+<span class="cmt">// ── index.php — o "controlador" ──────────────────────────────────────</span>
+
+<span class="cmt">// 1. Lê o parâmetro da URL. Se não existir, usa "home" como padrão</span>
+<span class="var">$pagina</span> = <span class="var">$_GET</span>[<span class="str">"page"</span>] ?? <span class="str">"home"</span>;
+
+<span class="tag">?&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html&gt;&lt;head&gt;</span>...<span class="tag">&lt;/head&gt;&lt;body&gt;</span>
+<span class="tag">&lt;?php</span>
+
+<span class="cmt">// 2. Inclui partes fixas do layout</span>
+<span class="fn">require_once</span> <span class="str">"./header.php"</span>;
+<span class="fn">require_once</span> <span class="str">"./nav.php"</span>;
+
+<span class="cmt">// 3. match() decide qual página carregar com base na URL</span>
+<span class="fn">require_once</span> <span class="kw">match</span>(<span class="var">$pagina</span>) {
+    <span class="str">"home"</span>    => <span class="str">"./pages/home.php"</span>,
+    <span class="str">"sobre"</span>   => <span class="str">"./pages/sobre.php"</span>,
+    <span class="str">"contato"</span> => <span class="str">"./pages/contato.php"</span>,
+    <span class="kw">default</span>   => <span class="str">"./pages/404.php"</span>,
+};
+
+<span class="fn">require_once</span> <span class="str">"./footer.php"</span>;
+
+<span class="tag">?&gt;</span>
+<span class="tag">&lt;/body&gt;&lt;/html&gt;</span>
+
+<span class="cmt">&lt;!--
+FLUXO:
+  index.php              → página Home
+  index.php?page=sobre   → página Sobre
+  index.php?page=contato → página Contato
+  index.php?page=xyz     → página 404
+--&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PADRÃO — FORMULÁRIO → TABELA
+        ================================================================ -->
+        <section id="padrao-form-tabela">
+            <h2>Padrão — Formulário → Tabela</h2>
+
+            <p>Fluxo completo: usuário preenche form → PHP processa → exibe na tabela.</p>
+
+            <pre data-lang="PHP"><code><span class="cmt">&lt;!-- formulario.php --&gt;</span>
+<span class="tag">&lt;form</span> <span class="atr">action=</span><span class="val">"?page=resultado"</span> <span class="atr">method=</span><span class="val">"post"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"text"</span>     <span class="atr">name=</span><span class="val">"nome"</span>     <span class="atr">placeholder=</span><span class="val">"Seu nome"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"email"</span>    <span class="atr">name=</span><span class="val">"email"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"password"</span> <span class="atr">name=</span><span class="val">"senha"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"password"</span> <span class="atr">name=</span><span class="val">"conf_senha"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"date"</span>     <span class="atr">name=</span><span class="val">"data_nasc"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atr">type=</span><span class="val">"time"</span>     <span class="atr">name=</span><span class="val">"hora"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;button</span> <span class="atr">type=</span><span class="val">"submit"</span><span class="tag">&gt;</span>Enviar<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span></code></pre>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+<span class="cmt">// resultado.php — processa e exibe os dados</span>
+
+<span class="fn">require_once</span> <span class="str">"./helpers/functions.php"</span>;  <span class="cmt">// importa validaInput, calcularIdade, periodoDia</span>
+
+<span class="kw">if</span> (<span class="fn">isset</span>(<span class="var">$_POST</span>[<span class="str">"nome"</span>])) {
+
+    <span class="cmt">// Array com os nomes dos campos a processar</span>
+    <span class="var">$chaves</span> = [<span class="str">"nome"</span>, <span class="str">"email"</span>, <span class="str">"senha"</span>, <span class="str">"conf_senha"</span>, <span class="str">"data_nasc"</span>, <span class="str">"hora"</span>];
+
+    <span class="cmt">// Limpa todos os dados de uma vez com array_map + arrow function</span>
+    [<span class="var">$nome</span>, <span class="var">$email</span>, <span class="var">$senha</span>, <span class="var">$confSenha</span>, <span class="var">$dataNasc</span>, <span class="var">$hora</span>] = <span class="fn">array_map</span>(
+        <span class="kw">fn</span>(<span class="var">$key</span>) => <span class="fn">validaInput</span>(<span class="var">$_POST</span>[<span class="var">$key</span>]),
+        <span class="var">$chaves</span>
+    );
+
+    <span class="var">$idade</span>        = <span class="fn">calcularIdade</span>(<span class="var">$dataNasc</span>);
+    <span class="var">$senhaConfere</span> = (<span class="var">$senha</span> === <span class="var">$confSenha</span>) ? <span class="str">"Sim"</span> : <span class="str">"Não"</span>;
+    <span class="var">$periodo</span>      = <span class="fn">periodoDia</span>(<span class="var">$hora</span>);
+}
+<span class="tag">?&gt;</span>
+
+<span class="tag">&lt;table</span> <span class="atr">border=</span><span class="val">"1"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;thead&gt;&lt;tr&gt;</span>
+        <span class="tag">&lt;th&gt;</span>Nome<span class="tag">&lt;/th&gt;&lt;th&gt;</span>Email<span class="tag">&lt;/th&gt;&lt;th&gt;</span>Senha OK<span class="tag">&lt;/th&gt;&lt;th&gt;</span>Idade<span class="tag">&lt;/th&gt;&lt;th&gt;</span>Período<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;&lt;/thead&gt;</span>
+    <span class="tag">&lt;tbody&gt;&lt;tr&gt;</span>
+        <span class="cmt">&lt;!-- <?= ... ?> é atalho para echo | ?? "" evita erro se variável não existe --&gt;</span>
+        <span class="tag">&lt;td&gt;&lt;?=</span> <span class="var">$nome</span>         ?? <span class="str">""</span> <span class="tag">?&gt;&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;&lt;?=</span> <span class="var">$email</span>        ?? <span class="str">""</span> <span class="tag">?&gt;&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;&lt;?=</span> <span class="var">$senhaConfere</span> ?? <span class="str">""</span> <span class="tag">?&gt;&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;&lt;?=</span> <span class="var">$idade</span>        ?? <span class="str">""</span> <span class="tag">?&gt;&lt;/td&gt;</span>
+        <span class="tag">&lt;td&gt;&lt;?=</span> <span class="var">$periodo</span>      ?? <span class="str">""</span> <span class="tag">?&gt;&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span></code></pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PADRÃO — ARQUIVO DE FUNÇÕES (HELPERS)
+        ================================================================ -->
+        <section id="padrao-helpers">
+            <h2>Padrão — Arquivo de Funções (helpers/functions.php)</h2>
+
+            <p>
+                Centralizar as funções em um arquivo separado evita repetição e facilita a reutilização.
+                Inclua com <code>require_once</code> nos arquivos que precisarem.
+            </p>
+
+            <pre data-lang="PHP"><code><span class="tag">&lt;?php</span>
+<span class="cmt">// helpers/functions.php</span>
+
+<span class="cmt">// ── validaInput — limpa dados do usuário ──────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">validaInput</span>(<span class="var">$dados</span>) {
+    <span class="var">$dados</span> = <span class="fn">trim</span>(<span class="var">$dados</span>);           <span class="cmt">// remove espaços extras</span>
+    <span class="var">$dados</span> = <span class="fn">htmlspecialchars</span>(<span class="var">$dados</span>);  <span class="cmt">// protege contra XSS</span>
+    <span class="kw">return</span> <span class="var">$dados</span>;
+}
+
+
+<span class="cmt">// ── calcularIdade — calcula anos a partir de data de nascimento ────────</span>
+<span class="kw">function</span> <span class="fn">calcularIdade</span>(<span class="var">$data</span>): <span class="kw">int</span> {
+    <span class="var">$nascimento</span> = <span class="kw">new</span> <span class="fn">DateTime</span>(<span class="var">$data</span>);   <span class="cmt">// cria objeto com a data recebida</span>
+    <span class="var">$agora</span>      = <span class="kw">new</span> <span class="fn">DateTime</span>();          <span class="cmt">// cria objeto com data atual</span>
+    <span class="kw">return</span> <span class="var">$agora</span>-><span class="fn">diff</span>(<span class="var">$nascimento</span>)-><span class="var">y</span>;  <span class="cmt">// diferença em anos</span>
+}
+
+
+<span class="cmt">// ── periodoDia — retorna Manhã, Tarde ou Noite baseado na hora ─────────</span>
+<span class="kw">function</span> <span class="fn">periodoDia</span>(<span class="var">$hora</span>): <span class="kw">string</span> {
+
+    <span class="cmt">// explode(":","14:30") → ["14","30"]
+    // [0] pega apenas a hora inteira</span>
+    <span class="var">$hora</span> = <span class="fn">explode</span>(<span class="str">":"</span>, <span class="var">$hora</span>)[<span class="num">0</span>];
+
+    <span class="kw">if</span>     (<span class="var">$hora</span> >= <span class="num">0</span>  && <span class="var">$hora</span> < <span class="num">12</span>) <span class="kw">return</span> <span class="str">"Manhã"</span>;
+    <span class="kw">elseif</span> (<span class="var">$hora</span> >= <span class="num">12</span> && <span class="var">$hora</span> < <span class="num">18</span>) <span class="kw">return</span> <span class="str">"Tarde"</span>;
+    <span class="kw">else</span>                                  <span class="kw">return</span> <span class="str">"Noite"</span>;
+}
+
+
+<span class="cmt">// ── calcularEmprestimo — juros simples ────────────────────────────────</span>
+<span class="kw">define</span>(<span class="str">"TAXA_JUROS"</span>, <span class="num">0.02</span>);  <span class="cmt">// 2% ao mês (constante global)</span>
+
+<span class="kw">function</span> <span class="fn">calcularEmprestimo</span>(<span class="kw">float</span> <span class="var">$valor</span>, <span class="kw">int</span> <span class="var">$meses</span>): <span class="kw">float</span> {
+    <span class="cmt">// Fórmula: M = P * (1 + i * n)</span>
+    <span class="kw">return</span> <span class="var">$valor</span> * (<span class="num">1</span> + (TAXA_JUROS * <span class="var">$meses</span>));
+}
+
+<span class="cmt">// Formatar resultado em moeda BR: number_format(valor, decimais, sep_decimal, sep_milhar)</span>
+<span class="fn">echo</span> <span class="str">"R$ "</span> . <span class="fn">number_format</span>(<span class="fn">calcularEmprestimo</span>(<span class="num">1000</span>, <span class="num">12</span>), <span class="num">2</span>, <span class="str">','</span>, <span class="str">'.'</span>);
+<span class="cmt">// R$ 1.240,00</span>
+
+<span class="tag">?&gt;</pre>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — FUNÇÕES ANÔNIMAS (CLOSURES)
+        ================================================================ -->
+        <section id="php-closures">
+            <h2>PHP — Funções Anônimas (Closures)</h2>
+
+            <p>
+                Uma função anônima (também chamada de <em>closure</em>) é uma função sem nome que pode ser
+                atribuída a uma variável, passada como argumento ou usada diretamente no código.
+                É muito útil quando você precisa de uma função rápida e temporária.
+            </p>
+
+            <h3>Características</h3>
+            <table>
+                <thead><tr><th>Característica</th><th>Detalhe</th></tr></thead>
+                <tbody>
+                    <tr><td>Sem nome</td><td><code>function () {}</code> — não possui identificador</td></tr>
+                    <tr><td>Armazenável</td><td>Pode ser salva em uma variável</td></tr>
+                    <tr><td>Variáveis externas</td><td>Acessa o escopo externo via <code>use</code></td></tr>
+                    <tr><td>Passável</td><td>Pode ser passada como parâmetro para outras funções</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Estrutura básica</h3>
+            <pre data-lang="PHP"><code><span class="var">$variavel</span> = <span class="kw">function</span> (<span class="var">$parametros</span>) <span class="kw">use</span> (<span class="var">$variaveis_externas</span>) {
+    <span class="cmt">// código</span>
+    <span class="kw">return</span> <span class="var">$valor</span>;
+};
+
+<span class="cmt">// $variavel       → onde a função é armazenada
+// function        → palavra-chave
+// ($parametros)   → parâmetros normais
+// use (...)       → opcional: importa variáveis do escopo externo</span></code></pre>
+
+            <h3>Exemplo com <code>use</code></h3>
+            <pre data-lang="PHP"><code><span class="var">$desconto</span> = <span class="num">0.1</span>;
+
+<span class="var">$aplicarDesconto</span> = <span class="kw">function</span> (<span class="var">$preco</span>) <span class="kw">use</span> (<span class="var">$desconto</span>) {
+    <span class="kw">return</span> <span class="var">$preco</span> - (<span class="var">$preco</span> * <span class="var">$desconto</span>);
+};
+
+<span class="fn">echo</span> <span class="var">$aplicarDesconto</span>(<span class="num">100</span>); <span class="cmt">// 90</span></code></pre>
+
+            <div class="card info">
+                <strong>use vs parâmetro:</strong> <code>use</code> captura variáveis do escopo onde a função foi <em>criada</em>.
+                Parâmetros recebem valores no momento da <em>chamada</em>.
+            </div>
+        </section>
+
+        <!-- ================================================================
+             SEÇÃO: PHP — ARRAY_MAP
+        ================================================================ -->
+        <section id="php-array-map">
+            <h2>PHP — array_map</h2>
+
+            <p>
+                O <code>array_map</code> percorre um array e aplica uma função em cada elemento,
+                retornando um <strong>novo array</strong> com os resultados — sem alterar o original.
+            </p>
+
+            <h3>Estrutura básica</h3>
+            <pre data-lang="PHP"><code><span class="cmt">// Com função anônima:</span>
+<span class="var">$novoArray</span> = <span class="fn">array_map</span>(<span class="kw">function</span> (<span class="var">$item</span>) {
+    <span class="kw">return</span> <span class="var">$resultado</span>;
+}, <span class="var">$array</span>);
+
+<span class="cmt">// array_map()       → função principal
+// function ($item)  → aplicada em cada elemento
+// $item             → valor atual do array
+// return            → novo valor no array resultante
+// $array            → array original (não é alterado)</span></code></pre>
+
+            <h3>Exemplos</h3>
+            <pre data-lang="PHP"><code><span class="cmt">// ── Dobrar números ────────────────────────────────────────────────</span>
+<span class="var">$numeros</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>];
+<span class="var">$resultado</span> = <span class="fn">array_map</span>(<span class="kw">function</span> (<span class="var">$n</span>) {
+    <span class="kw">return</span> <span class="var">$n</span> * <span class="num">2</span>;
+}, <span class="var">$numeros</span>);
+<span class="cmt">// [2, 4, 6, 8]</span>
+
+<span class="cmt">// ── Com variável externa (use) ────────────────────────────────────</span>
+<span class="var">$taxa</span> = <span class="num">2</span>;
+<span class="var">$resultado</span> = <span class="fn">array_map</span>(<span class="kw">function</span> (<span class="var">$n</span>) <span class="kw">use</span> (<span class="var">$taxa</span>) {
+    <span class="kw">return</span> <span class="var">$n</span> * <span class="var">$taxa</span>;
+}, [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]);
+<span class="cmt">// [2, 4, 6]</span>
+
+<span class="cmt">// ── Com strings ───────────────────────────────────────────────────</span>
+<span class="var">$nomes</span> = [<span class="str">"joão"</span>, <span class="str">"maria"</span>, <span class="str">"pedro"</span>];
+<span class="var">$maiusculas</span> = <span class="fn">array_map</span>(<span class="kw">function</span> (<span class="var">$nome</span>) {
+    <span class="kw">return</span> <span class="fn">strtoupper</span>(<span class="var">$nome</span>);
+}, <span class="var">$nomes</span>);
+<span class="cmt">// ["JOÃO", "MARIA", "PEDRO"]</span></code></pre>
+
+            <h3>Versão moderna — Arrow Function</h3>
+            <pre data-lang="PHP"><code><span class="cmt">// Sintaxe mais curta com fn() =></span>
+<span class="var">$numeros</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="var">$resultado</span> = <span class="fn">array_map</span>(<span class="kw">fn</span>(<span class="var">$n</span>) => <span class="var">$n</span> * <span class="num">2</span>, <span class="var">$numeros</span>);
+<span class="cmt">// [2, 4, 6]
+
+// Arrow functions capturam variáveis externas automaticamente (sem 'use')</span>
+<span class="var">$taxa</span> = <span class="num">3</span>;
+<span class="var">$resultado</span> = <span class="fn">array_map</span>(<span class="kw">fn</span>(<span class="var">$n</span>) => <span class="var">$n</span> * <span class="var">$taxa</span>, [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]);
+<span class="cmt">// [3, 6, 9]</span></code></pre>
+
+            <div class="card tip">
+                <strong>Quando usar array_map:</strong> quando quiser transformar todos os elementos de um array
+                aplicando a mesma lógica, sem alterar o original e de forma legível.
+            </div>
+
+            <div class="card warn">
+                <strong>array_map vs array_filter vs array_reduce:</strong>
+                <code>map</code> transforma elementos &nbsp;|&nbsp;
+                <code>filter</code> filtra elementos &nbsp;|&nbsp;
+                <code>reduce</code> reduz a um único valor.
+            </div>
+        </section>
+
+        <footer>
+            <p>Guia de Consulta — HTML, CSS &amp; PHP &nbsp;|&nbsp; Bons estudos 🚀</p>
+        </footer>
+
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+.vscode/
+.cache/
+*.lnk
+*.url
+desktop.ini
